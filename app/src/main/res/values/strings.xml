@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDoListApp</string>
+    <string-array name="tracking_types">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+</resources>
