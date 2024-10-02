@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-// Github push test comment - disregard
-
 public class MainActivity extends AppCompatActivity {
 
     // Define main variables
