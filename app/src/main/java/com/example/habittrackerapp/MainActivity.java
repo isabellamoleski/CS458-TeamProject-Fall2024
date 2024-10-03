@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
             String trackingType = cursor.getString(3);
             boolean isComplete = cursor.getInt(4) == 1;  // 1 = Complete, 0 = Incomplete
 
-            addCard(id, name, description, trackingType, isComplete);
+            Habit habit = new Habit(id, name, description, trackingType, isComplete);
+            addCard(habit);
         }
         cursor.close();
     }
@@ -71,9 +72,15 @@ public class MainActivity extends AppCompatActivity {
                     String habitDescription = description.getText().toString();
                     String trackingType = trackingSpinner.getSelectedItem().toString();
 
+                    // Validate input
+                    if (habitName.isEmpty() || habitDescription.isEmpty()) {
+                        return; // Prevent saving if input is invalid
+                    }
+
                     // Insert into the database
                     long id = dbHelper.insertHabit(habitName, habitDescription, trackingType);
-                    addCard((int) id, habitName, habitDescription, trackingType, false); // Newly created, not complete
+                    Habit habit = new Habit((int) id, habitName, habitDescription, trackingType, false);
+                    addCard(habit); // Newly created, not complete
                 })
                 .setNegativeButton("Cancel", null);
 
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Define addCard to display a card with habit data
-    private void addCard(int id, String name, String description, String trackingType, boolean isComplete) {
+    private void addCard(Habit habit) {
         // Use card.xml to display habits
         final View view = getLayoutInflater().inflate(R.layout.card, null);
 
@@ -93,21 +100,21 @@ public class MainActivity extends AppCompatActivity {
         Button delete = view.findViewById(R.id.btnDelete);
         Button edit = view.findViewById(R.id.btnEdit);
 
-        nameView.setText(name);
-        descriptionView.setText(description);
-        trackingView.setText("Tracking: " + trackingType);
-        completeCheckBox.setChecked(isComplete);
+        nameView.setText(habit.getName());
+        descriptionView.setText(habit.getDescription());
+        trackingView.setText("Tracking: " + habit.getTrackingType());
+        completeCheckBox.setChecked(habit.isComplete());
 
         // Set click listeners for delete, edit, and completion checkbox
         delete.setOnClickListener(v -> {
-            dbHelper.deleteHabit(id);
+            dbHelper.deleteHabit(habit.getId());
             layout.removeView(view);
         });
 
-        edit.setOnClickListener(v -> showEditDialog(id, nameView, descriptionView, trackingView));
+        edit.setOnClickListener(v -> showEditDialog(habit, view));
 
         completeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dbHelper.updateCompletionStatus(id, isChecked);
+            dbHelper.updateCompletionStatus(habit.getId(), isChecked);
             // Later add this information to another table in the database?
             // Would be good to track it somehow for graphs later on
         });
@@ -116,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Show edit dialog for a card (habit)
-    private void showEditDialog(int id, final TextView nameView, final TextView descriptionView, final TextView trackingView) {
+    private void showEditDialog(Habit habit, View oldView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog, null);
 
@@ -126,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
         setupTrackingSpinner(editTracking);
 
-        editName.setText(nameView.getText().toString());
-        editDescription.setText(descriptionView.getText().toString());
+        editName.setText(habit.getName());
+        editDescription.setText(habit.getDescription());
 
-        String currentTrackingType = trackingView.getText().toString().replace("Tracking: ", "");
+        String currentTrackingType = habit.getTrackingType();
         int spinnerPosition = ((ArrayAdapter) editTracking.getAdapter()).getPosition(currentTrackingType);
         editTracking.setSelection(spinnerPosition);
 
@@ -140,11 +147,15 @@ public class MainActivity extends AppCompatActivity {
                     String newDescription = editDescription.getText().toString();
                     String newTrackingType = editTracking.getSelectedItem().toString();
 
-                    nameView.setText(newName);
-                    descriptionView.setText(newDescription);
-                    trackingView.setText("Tracking: " + newTrackingType);
+                    habit.setName(newName);
+                    habit.setDescription(newDescription);
+                    habit.setTrackingType(newTrackingType);
 
-                    dbHelper.updateHabit(id, newName, newDescription, newTrackingType);
+                    dbHelper.updateHabit(habit.getId(), newName, newDescription, newTrackingType);
+
+                    // Clear the old card view and add the updated one
+                    layout.removeView(oldView);
+                    addCard(habit);
                 })
                 .setNegativeButton("Cancel", null);
 
@@ -157,5 +168,11 @@ public class MainActivity extends AppCompatActivity {
                 this, R.array.tracking_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close(); // Close the database connection
     }
 }
