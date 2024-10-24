@@ -5,6 +5,9 @@ plugins {
 android {
     namespace = "com.example.habittrackerapp"
     compileSdk = 34
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.habittrackerapp"

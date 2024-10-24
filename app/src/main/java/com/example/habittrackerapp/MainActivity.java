@@ -1,5 +1,6 @@
 package com.example.habittrackerapp;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,25 +31,41 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layout;
     private DatabaseHelper dbHelper;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get widgets from view
         add = findViewById(R.id.btnAdd);
         layout = findViewById(R.id.container);
         dbHelper = new DatabaseHelper(this);
 
+        // Call method to create form from dialog.xml when button is clicked
+//        buildDialog();
+//        add.setOnClickListener(v -> dialog.show());
+
+        // Displays dialog alert with list of habits to build or quit
+        add.setOnClickListener(v -> newHabitListBuildDialog());
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
         // Load existing habits from the database
         loadHabitsFromDatabase();
 
-        // Call method to create form from dialog.xml when button is clicked
-        buildDialog();
-        add.setOnClickListener(v -> dialog.show());
+        if(dialog != null){
+            dialog.dismiss();
+        }
     }
 
     // Load habits from the SQLite database and display them as cards
     private void loadHabitsFromDatabase() {
+        layout.removeAllViews();
+
         Cursor cursor = dbHelper.getAllHabits();
         while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
@@ -52,6 +78,41 @@ public class MainActivity extends AppCompatActivity {
             addCard(habit);
         }
         cursor.close();
+    }
+
+    // Create AlertDialog with list of habits to build or quit
+    public void newHabitListBuildDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.new_habit_list, null);
+        builder.setView(view);
+
+        TabLayout tabLayout = view.findViewById(R.id.newHabitListTabLayout);
+        ViewPager2 viewPager2 = view.findViewById(R.id.view_pager);
+
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter((FragmentActivity) this);
+        viewPager2.setAdapter(myViewPagerAdapter);
+
+        // Set up tab selection listener
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        // Set cancel button and show the dialog
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+            dialog.dismiss();
+        });
+
+        dialog = builder.create();
+        dialog.show();
     }
 
     // Create the buildDialog function to show form for dialog.xml when add button clicked
@@ -100,9 +161,11 @@ public class MainActivity extends AppCompatActivity {
         Button delete = view.findViewById(R.id.btnDelete);
         Button edit = view.findViewById(R.id.btnEdit);
 
+        String tracking = "Tracking: " + habit.getTrackingType();
+
         nameView.setText(habit.getName());
         descriptionView.setText(habit.getDescription());
-        trackingView.setText("Tracking: " + habit.getTrackingType());
+        trackingView.setText(tracking);
         completeCheckBox.setChecked(habit.isComplete());
 
         // Set click listeners for delete, edit, and completion checkbox
