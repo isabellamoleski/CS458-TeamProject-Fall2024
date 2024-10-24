@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/activity_main.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/card.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/card.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/dialog.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/dialog.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/new_habit_list.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/new_habit_list.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/fragment_quit.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/fragment_quit.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/activity_new_habit.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/activity_new_habit.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/fragment_build.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/fragment_build.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/habit_item.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/habit_item.xml"
+    },
+    {
+        "merged": "com.example.habittrackerapp-mergeDebugResources-30:/layout/activity_stats.xml",
+        "source": "com.example.habittrackerapp-main-33:/layout/activity_stats.xml"
+    }
+]
