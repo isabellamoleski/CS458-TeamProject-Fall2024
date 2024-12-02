@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +26,8 @@ public class NewHabitActivity extends AppCompatActivity {
     private EditText frequencyEditText;
     private EditText reminderTimeEditText;
     private EditText notesEditText;
+
+    private ImageView backImageView;
 
     private ActivityNewHabitBinding binding;
 
@@ -58,11 +61,22 @@ public class NewHabitActivity extends AppCompatActivity {
             habitTypeEditText.setText(habitType);
         }
 
+        backImageView = findViewById(R.id.back_button);
+
+        // Set onClickListener for back_button
+        backImageView.setOnClickListener(v -> {
+            goBack();
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void goBack() {
+        finish();
     }
 
     // newHabitComplete: Adds new habit to sqlite database

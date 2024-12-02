@@ -127,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
         trackingView.setText("Tracking: " + habit.getTrackingType());
         checkBoxComplete.setChecked(habit.isComplete());
 
+        // Handle view navigation to HabitDetailsActivity
+        view.setOnClickListener(view1 -> {
+            displayHabitDetails(habit.getName());
+        });
+
         // Handle habit deletion
         btnDelete.setOnClickListener(v -> {
             dbHelper.deleteHabit(habit.getId()); // Delete from database
@@ -142,6 +147,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         layout.addView(view); // Add the card to the layout
+    }
+
+    // Display the HabitDetailsActivity
+    private void displayHabitDetails(String name) {
+        Intent intent = new Intent(MainActivity.this, HabitDetailsActivity.class);
+
+        // Pass habit's name
+        intent.putExtra("name", name);
+
+        startActivity(intent); // Start HabitDetailsActivity
     }
 
     // Show edit dialog for a habit card
