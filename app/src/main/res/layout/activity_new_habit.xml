@@ -44,182 +44,203 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight=".9">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Name" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="10dp"
+                android:text="Name"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/name_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:ems="10"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/description_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Description" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="10dp"
+                android:text="Description"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/description_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:ems="10"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/habit_type_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Habit Type" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="10dp"
+                android:text="Habit Type"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/habit_type_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:ems="10"
-                android:inputType="text"/>
-
-            <TextView
-                android:id="@+id/goal_quantity_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Goal" />
-
-            <EditText
-                android:id="@+id/goal_quantity_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:inputType="text"
                 android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="text"/>
+                android:padding="10dp" />
 
-            <TextView
-                android:id="@+id/goal_period_text_view"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Goal Period" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/goal_period_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="text"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/frequency_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Frequency" />
+                    <TextView
+                        android:id="@+id/goal_quantity_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="10dp"
+                        android:text="Goal"
+                        android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/frequency_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:ems="10"
-                android:inputType="text"/>
+                    <EditText
+                        android:id="@+id/goal_quantity_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:minHeight="48dp"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/goal_period_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="10dp"
+                        android:text="Period"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/period_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/frequency_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="10dp"
+                        android:text="Frequency"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/frequency_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:padding="10dp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/reminder_time_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:text="Reminder" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="10dp"
+                android:text="Reminder"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/reminder_time_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:ems="10"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/notes_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
-                android:textStyle="bold"
-                android:text="Notes" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="10dp"
+                android:text="Notes"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/notes_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:padding="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:ems="10"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="10dp" />
 
         </LinearLayout>
 
     </ScrollView>
-
 
     <TextView
         android:id="@+id/complete_button"

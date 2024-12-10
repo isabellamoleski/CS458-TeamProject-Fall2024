@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.ViewHolder> {
-    private List<String> habitsList;
+    private List<String[]> habitsList;
     private OnItemClickListener onItemClickListener;
 
     // Constructor to pass the data
-    public HabitsListAdapter(List<String> stringList, OnItemClickListener onItemClickListener) {
+    public HabitsListAdapter(List<String[]> stringList, OnItemClickListener onItemClickListener) {
         this.habitsList = stringList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -33,8 +33,8 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set the data for each item
-        String currentItem = habitsList.get(position);
-        holder.textView.setText(currentItem);
+        String[] currentItem = habitsList.get(position);
+        holder.textView.setText(currentItem[0]);
     }
 
     @Override
@@ -55,13 +55,13 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     // Pass the clicked item to the listener
-                    listener.onItemClick(textView.getText().toString());
+                    listener.onItemClick(position);
                 }
             });
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String item);
+        void onItemClick(int position);
     }
 }

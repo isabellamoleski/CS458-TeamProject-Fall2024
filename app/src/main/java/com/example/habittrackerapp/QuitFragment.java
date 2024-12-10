@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.habittrackerapp.HabitsListAdapter;
 import com.example.habittrackerapp.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,12 +44,13 @@ public class QuitFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Array Data
-        List<String> data = loadQuitList();
+        List<String[]> data = loadQuitList();
 
         // Adapter
-        HabitsListAdapter adapter = new HabitsListAdapter(data, item -> {
+        HabitsListAdapter adapter = new HabitsListAdapter(data, pos -> {
             Intent intent = new Intent(view.getContext(), NewHabitActivity.class);
-            intent.putExtra("habit_name", item);
+            intent.putExtra("habit_name", data.get(pos)[0]);
+            intent.putExtra("habit_description", data.get(pos)[1]);
             intent.putExtra("habit_type", "Quit");
             view.getContext().startActivity(intent);
         });
@@ -58,10 +60,23 @@ public class QuitFragment extends Fragment {
     }
 
     // Returns a list of Build habits
-    public List<String> loadQuitList(){
-        return Arrays.asList("Smoke Less", "Drink Less Alcohol", "Drink Less Beverage",
-                "Drink Less Caffeine", "Eat Less Sugar", "Less Carbohydrate",
-                "Play Less Game", "Complain Less", "Sit Less", "Watch Less TV",
-                "Less Social App", "Spend Less");
+    public List<String[]> loadQuitList(){
+
+        List<String[]> quitList = new ArrayList<>();
+
+        quitList.add(new String[]{"Smoke Less", "Reduce smoking to improve your health."});
+        quitList.add(new String[]{"Drink Less Alcohol", "Cut back on alcohol consumption for better well-being."});
+        quitList.add(new String[]{"Drink Less Beverage", "Limit sugary or high-calorie beverages."});
+        quitList.add(new String[]{"Drink Less Caffeine", "Lower caffeine intake for balanced energy levels."});
+        quitList.add(new String[]{"Eat Less Sugar", "Reduce sugar consumption for a healthier diet."});
+        quitList.add(new String[]{"Less Carbohydrate", "Limit carbs to support a balanced diet."});
+        quitList.add(new String[]{"Play Less Game", "Spend less time gaming to focus on other activities."});
+        quitList.add(new String[]{"Complain Less", "Cultivate positivity by reducing complaints."});
+        quitList.add(new String[]{"Sit Less", "Minimize sitting time to stay active."});
+        quitList.add(new String[]{"Watch Less TV", "Cut back on TV time for a productive day."});
+        quitList.add(new String[]{"Less Social App", "Limit social app usage to reclaim time."});
+        quitList.add(new String[]{"Spend Less", "Reduce spending to save money."});
+
+        return quitList;
     }
 }

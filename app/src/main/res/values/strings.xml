@@ -5,6 +5,22 @@
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
+    <string-array name="period_types">
+        <item>Count</item>
+        <item>Steps</item>
+        <item>Miles</item>
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>Liters</item>
+        <item>Grams</item>
+        <item>Calories</item>
+        <item>Dollars</item>
+    </string-array>
+    <string-array name="frequency_types">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
 </resources>

@@ -2,9 +2,12 @@ package com.example.habittrackerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,8 +25,8 @@ public class NewHabitActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private EditText habitTypeEditText;
     private EditText goalQuantityEditText;
-    private EditText goalPeriodEditText;
-    private EditText frequencyEditText;
+    private Spinner goalPeriodEditText;
+    private Spinner frequencyEditText;
     private EditText reminderTimeEditText;
     private EditText notesEditText;
 
@@ -48,25 +51,30 @@ public class NewHabitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String habitName = intent.getStringExtra("habit_name");
+        String habitDescription = intent.getStringExtra("habit_description");
         String habitType = intent.getStringExtra("habit_type");
 
         // Loads habit name and type to new habit
         if(habitName != null && habitType != null){
             titleTextView = findViewById(R.id.title_text_view);
             nameEditText = findViewById(R.id.name_edit_text);
+            descriptionEditText = findViewById(R.id.description_edit_text);
             habitTypeEditText = findViewById(R.id.habit_type_edit_text);
 
             titleTextView.setText(habitName);
             nameEditText.setText(habitName);
+            descriptionEditText.setText(habitDescription);
             habitTypeEditText.setText(habitType);
         }
 
-        backImageView = findViewById(R.id.back_button);
-
         // Set onClickListener for back_button
+        backImageView = findViewById(R.id.back_button);
         backImageView.setOnClickListener(v -> {
             goBack();
         });
+
+        loadPeriodSpinner();
+        loadFrequencySpinner();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -75,8 +83,34 @@ public class NewHabitActivity extends AppCompatActivity {
         });
     }
 
+    private void loadPeriodSpinner() {
+        Spinner periodSpinner = findViewById(R.id.period_spinner);
+        setupPeriodSpinner(periodSpinner); // Populate spinner with tracking types
+    }
+
+    private void loadFrequencySpinner() {
+        Spinner frequencySpinner = findViewById(R.id.frequency_spinner);
+        setupFrequencySpinner(frequencySpinner); // Populate spinner with tracking types
+    }
+
     private void goBack() {
         finish();
+    }
+
+    // Setup spinner for period type (Count, Steps, Miles, Minutes)
+    private void setupPeriodSpinner(Spinner spinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.period_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
+
+    // Setup spinner for frequency type (Daily, Weekly, Monthly)
+    private void setupFrequencySpinner(Spinner spinner) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.frequency_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     // newHabitComplete: Adds new habit to sqlite database
@@ -87,8 +121,8 @@ public class NewHabitActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.description_edit_text);
         habitTypeEditText = findViewById(R.id.habit_type_edit_text);
         goalQuantityEditText = findViewById(R.id.goal_quantity_edit_text);
-        goalPeriodEditText = findViewById(R.id.goal_period_edit_text);
-        frequencyEditText = findViewById(R.id.frequency_edit_text);
+        goalPeriodEditText = findViewById(R.id.period_spinner);
+        frequencyEditText = findViewById(R.id.frequency_spinner);
         reminderTimeEditText = findViewById(R.id.reminder_time_edit_text);
         notesEditText = findViewById(R.id.notes_edit_text);
 
@@ -96,8 +130,8 @@ public class NewHabitActivity extends AppCompatActivity {
         String habitDescription = String.valueOf(descriptionEditText.getText());
         String habitType = String.valueOf(habitTypeEditText.getText());
         String habitGoalQuantity = String.valueOf(goalQuantityEditText.getText());
-        String habitGoalPeriod = String.valueOf(goalPeriodEditText.getText());
-        String habitFrequency = String.valueOf(frequencyEditText.getText());
+        String habitGoalPeriod = goalPeriodEditText.getSelectedItem().toString();
+        String habitFrequency = frequencyEditText.getSelectedItem().toString();
         String habitReminder = String.valueOf(reminderTimeEditText.getText());
         String habitNotes = String.valueOf(notesEditText.getText());
 
@@ -106,8 +140,12 @@ public class NewHabitActivity extends AppCompatActivity {
             return; // Prevent saving if input is invalid
         }
 
-        long id = dbHelper.insertHabit(habitName, habitDescription, habitType);
-        Habit habit = new Habit((int) id, habitName, habitDescription, habitType, false);
+        try {
+            long id = dbHelper.insertHabitDB(habitName, habitDescription, "", habitType, habitGoalQuantity,
+                    habitGoalPeriod, habitFrequency, habitReminder, habitNotes);
+        }catch (Exception e) {
+            Log.d("Error: ", e.toString());
+        }
 
         finish();
     }

@@ -17,6 +17,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_TRACKING_TYPE = "trackingType";
+    public static final String COLUMN_HABIT_TYPE = "habitType";
+    public static final String COLUMN_CURRENT_QUANTITY = "currentQuantity";
+    public static final String COLUMN_GOAL_QUANTITY = "goalQuantity";
+    public static final String COLUMN_GOAL_PERIOD = "goalPeriod";
+    public static final String COLUMN_FREQUENCY = "frequency";
+    public static final String COLUMN_REMINDER = "reminder";
+    public static final String COLUMN_NOTES = "notes";
     public static final String COLUMN_COMPLETION_STATUS = "completionStatus";
 
     // ActiveHabitsStats Table
@@ -29,7 +36,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_GOAL_QUANTITY_TOTAL = "GoalQuantityTotal";
     public static final String COLUMN_GOAL_QUANTITY_DAILY_AVG = "GoalQuantityDailyAvg";
     public static final String COLUMN_OVERALL_RATE = "OverallRate";
-    public static final String COLUMN_NOTES = "Notes";
 
     // Constructor
     public DatabaseHelper(Context context) {
@@ -44,6 +50,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_DESCRIPTION + " TEXT, " +
                 COLUMN_TRACKING_TYPE + " TEXT, " +
+                COLUMN_HABIT_TYPE + " TEXT, " +
+                COLUMN_CURRENT_QUANTITY + "TEXT DEFAULT 0," +
+                COLUMN_GOAL_QUANTITY + " TEXT, " +
+                COLUMN_GOAL_PERIOD + " TEXT, " +
+                COLUMN_FREQUENCY + " TEXT, " +
+                COLUMN_REMINDER + " TEXT, " +
+                COLUMN_NOTES + " TEXT, " +
                 COLUMN_COMPLETION_STATUS + " INTEGER DEFAULT 0)";
         db.execSQL(createHabitsTable);
 
@@ -73,6 +86,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert habit
+    public long insertHabitDB(String name, String description, String trackingType, String habitType,
+                            String goalQuantity, String goalPeriod, String frequency, String reminder, String notes) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_TRACKING_TYPE, trackingType);
+        values.put(COLUMN_HABIT_TYPE, habitType);
+        values.put(COLUMN_GOAL_QUANTITY, goalQuantity);
+        values.put(COLUMN_GOAL_PERIOD, goalPeriod);
+        values.put(COLUMN_FREQUENCY, frequency);
+        values.put(COLUMN_REMINDER, reminder);
+        values.put(COLUMN_NOTES, notes);
+        return db.insert(TABLE_NAME, null, values);
+    }
+
+    // Insert habit
     public long insertHabit(String name, String description, String trackingType) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -80,6 +110,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_TRACKING_TYPE, trackingType);
         return db.insert(TABLE_NAME, null, values);
+    }
+
+    // Update habit
+    public int updateHabitQuantity(String name, int goalQuantity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GOAL_QUANTITY, goalQuantity);
+        return db.update(TABLE_NAME, values, COLUMN_NAME + " = ?", new String[]{String.valueOf(name)});
     }
 
     // Update habit
@@ -110,6 +148,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllHabits() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+    // Fetch all habits
+    public Cursor getHabitsByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + "=?",
+                new String[]{String.valueOf(name)});
     }
 
     // Insert or update habit statistics
