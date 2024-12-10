@@ -11,11 +11,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -121,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox checkBoxComplete = view.findViewById(R.id.checkBoxComplete); // Completion checkbox
         Button btnDelete = view.findViewById(R.id.btnDelete);
         Button btnEdit = view.findViewById(R.id.btnEdit);
-
+        
         nameView.setText(habit.getName());
         descriptionView.setText(habit.getDescription());
         trackingView.setText("Tracking: " + habit.getTrackingType());
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Handle habit deletion
         btnDelete.setOnClickListener(v -> {
+            showDeleteConfirmationDialog(habit, view);
             dbHelper.deleteHabit(habit.getId()); // Delete from database
             loadHabitsFromDatabase(); // Reload habits after deletion
         });
@@ -148,6 +155,38 @@ public class MainActivity extends AppCompatActivity {
 
         layout.addView(view); // Add the card to the layout
     }
+
+    private void showDeleteConfirmationDialog(Habit habit, View cardView) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Habit")
+                .setMessage("Are you sure you want to delete \"" + habit.getName() + "\"? This action cannot be undone.")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    // Delete from database
+                    int result = dbHelper.deleteHabit(habit.getId());
+                    if (result > 0) {
+                        // Successfully deleted, remove the card
+                        layout.removeView(cardView);
+
+                        // Optional: Show confirmation toast
+                        Toast.makeText(MainActivity.this,
+                                "Habit deleted successfully",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Show error if deletion failed
+                        Toast.makeText(MainActivity.this,
+                                "Error deleting habit",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     // Display the HabitDetailsActivity
     private void displayHabitDetails(String name) {
